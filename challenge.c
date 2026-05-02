@@ -36,6 +36,7 @@ void sparse_multiply(
     // Stage 1: CSR conversion
     unsigned int cur_col = 0;
     unsigned int cur_val = 0;
+    *row_ptrs = 0; // not setting this caused seg fault in multiplication
     for(int row = 0; row < rows; ++row) {
         for(int col = 0; col < cols; ++col) {
             if(A[rows*row + col] != 0) {// flp comparison
@@ -52,6 +53,16 @@ void sparse_multiply(
         yi = sum(j = 0...cols-1)(A[i][j]*x[j])
         write brute force with CSR utilising the format and optimise later
     */
+    int start = 0;
+    for(int row = 0; row < rows; row++) {
+        int count = row_ptrs[row + 1] - row_ptrs[row];
+        y[row] = 0; // making sure all bits are off
+        // segmentation fault here
+        for(int iter = start; iter < start + count; ++iter) {
+            y[row] += values[iter]*x[col_indices[iter]]; 
+        }
+        start += count;
+    }
 }
 
 // =========================================================
