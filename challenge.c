@@ -39,10 +39,10 @@ void sparse_multiply(
     *row_ptrs = 0; // not setting this caused seg fault in multiplication
     for(int row = 0; row < rows; ++row) {
         for(int col = 0; col < cols; ++col) {
-            if(A[rows*row + col] != 0) {// flp comparison
+            if(A[cols*row + col] != 0) {// flp comparison
                 ++(*out_nnz); // tracking count
                 col_indices[cur_col++] = col;
-                values[cur_val++] = A[rows*row + col];    
+                values[cur_val++] = A[cols*row + col];    
             } 
         }
         row_ptrs[row+1] = *out_nnz;
