@@ -36,8 +36,19 @@ void sparse_multiply(
     // Stage 1:
     for(int row = 0; row < rows; ++row) {
         for(int col = 0; col < cols; ++col) {
-            if(A[rows*row + col] != 0) { // need to be read more on flp comparisons
-                printf("non zero element %f \n", A[rows*row + col]);   
+            if(A[rows*row + col] != 0) {// flp comparison
+                ++(*out_nnz); // tracking count
+                /*  
+                    we need row pointer tracking such that 
+                    row_ptrs[0] = 0 and row_ptrs[m] = out_nnz (final)
+                    col_indices -> just maintain current poisition and 
+                                   upon each new entry increment it
+                    col: use cur_col = 0 and upon each new non-zero entry
+                         just col_indices[cur_col++] = col;
+                    data: use cur_val = 0 and upon each new non-zero entry
+                         just values[cur_val++] = A[rows*row + col]
+                    row:    
+                */ 
             }
         }
     }
