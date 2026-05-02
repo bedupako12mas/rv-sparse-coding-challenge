@@ -33,25 +33,25 @@ void sparse_multiply(
         stage2: matrix vector multiplication
     */  
 
-    // Stage 1:
+    // Stage 1: CSR conversion
+    unsigned int cur_col = 0;
+    unsigned int cur_val = 0;
     for(int row = 0; row < rows; ++row) {
         for(int col = 0; col < cols; ++col) {
             if(A[rows*row + col] != 0) {// flp comparison
                 ++(*out_nnz); // tracking count
-                /*  
-                    we need row pointer tracking such that 
-                    row_ptrs[0] = 0 and row_ptrs[m] = out_nnz (final)
-                    col_indices -> just maintain current poisition and 
-                                   upon each new entry increment it
-                    col: use cur_col = 0 and upon each new non-zero entry
-                         just col_indices[cur_col++] = col;
-                    data: use cur_val = 0 and upon each new non-zero entry
-                         just values[cur_val++] = A[rows*row + col]
-                    row:    
-                */ 
-            }
+                col_indices[cur_col++] = col;
+                values[cur_val++] = A[rows*row + col];    
+            } 
         }
+        row_ptrs[row+1] = *out_nnz;
     }
+    //Stage 2: Matrix-Vector multiplication
+    /*
+        we now need to implement the matrix vector multiplication algorith
+        yi = sum(j = 0...cols-1)(A[i][j]*x[j])
+        write brute force with CSR utilising the format and optimise later
+    */
 }
 
 // =========================================================
