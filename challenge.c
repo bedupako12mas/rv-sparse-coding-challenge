@@ -27,7 +27,20 @@ void sparse_multiply(
     double* y
 ) {
     // TODO
+    /*
+        Initial step. My basic algorithm for the problem
+        stage1: convert the matrix
+        stage2: matrix vector multiplication
+    */  
 
+    // Stage 1:
+    for(int row = 0; row < rows; ++row) {
+        for(int col = 0; col < cols; ++col) {
+            if(A[rows*row + col] != 0) { // need to be read more on flp comparisons
+                printf("non zero element %f \n", A[rows*row + col]);   
+            }
+        }
+    }
 }
 
 // =========================================================
