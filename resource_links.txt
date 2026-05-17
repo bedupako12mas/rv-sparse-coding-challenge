@@ -1,3 +1,0 @@
-Important Links used for research and Learning
-
-1) https://leimao.github.io/blog/CSR-Sparse-Matrix-Multiplication/

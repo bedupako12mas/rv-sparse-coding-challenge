@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
+#include <float.h>
 #include <time.h>
 
 // =========================================================
@@ -26,42 +27,26 @@ void sparse_multiply(
     int* out_nnz, double* values, int* col_indices, int* row_ptrs,
     double* y
 ) {
-    // TODO
-    /*
-        Initial step. My basic algorithm for the problem
-        stage1: convert the matrix
-        stage2: matrix vector multiplication
-    */  
-
     // Stage 1: CSR conversion
-    unsigned int cur_col = 0;
-    unsigned int cur_val = 0;
+    int nnz = 0;
     *row_ptrs = 0; // not setting this caused seg fault in multiplication
     for(int row = 0; row < rows; ++row) {
         for(int col = 0; col < cols; ++col) {
-            if(A[cols*row + col] != 0) {// flp comparison
+            if(fabs(A[cols*row + col]) > DBL_EPSILON) {
+                col_indices[nnz] = col;
+                values[nnz] = A[cols*row + col];
+                ++nnz;
                 ++(*out_nnz); // tracking count
-                col_indices[cur_col++] = col;
-                values[cur_val++] = A[cols*row + col];    
-            } 
+            }
         }
         row_ptrs[row+1] = *out_nnz;
     }
     //Stage 2: Matrix-Vector multiplication
-    /*
-        we now need to implement the matrix vector multiplication algorith
-        yi = sum(j = 0...cols-1)(A[i][j]*x[j])
-        write brute force with CSR utilising the format and optimise later
-    */
-    int start = 0;
     for(int row = 0; row < rows; row++) {
-        int count = row_ptrs[row + 1] - row_ptrs[row];
         y[row] = 0; // making sure all bits are off
-        // segmentation fault here
-        for(int iter = start; iter < start + count; ++iter) {
-            y[row] += values[iter]*x[col_indices[iter]]; 
+        for(int iter = row_ptrs[row]; iter < row_ptrs[row+1]; ++iter) {
+            y[row] += values[iter]*x[col_indices[iter]];
         }
-        start += count;
     }
 }
 
