@@ -58,9 +58,3 @@ qemu-riscv64 -cpu max ./run_rvv_riscv
 | GCC (host) | Ubuntu 15.2.0 |
 | GCC (RISC-V cross) | riscv64-linux-gnu-gcc 15.2.0 |
 | QEMU | 10.1.0 |
-
----
-
-## References
-
-See `references.txt` for the RVV intrinsics standard, function signatures, and documentation links.
